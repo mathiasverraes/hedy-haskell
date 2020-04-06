@@ -4,21 +4,24 @@ import Control.Monad.State.Lazy
 import System.Environment
 
 
-main' = evalStateT (execAll program) ""
+main' = evalStateT (execAll sampleProgram) initialState
         
-program :: [Stmt]
-program = [ Print (Expr "Hello world!")
-          , Ask (Expr "What is your name")
-          , Echo (Expr "Hi ")
-          ]
 
+initialState = ""
+
+sampleProgram :: Program
+sampleProgram = 
+    [ Print (Expr "Hello world!")
+    , Ask (Expr "What is your name")
+    , Echo (Expr "Hi ")
+    ]
 
 data Expr = Expr String deriving (Show)
 data Stmt = Print Expr
             | Ask Expr
             | Echo Expr
             deriving (Show)
-    
+type Program = [Stmt]    
 
 exec :: Stmt -> StateT String IO ()
 exec (Print (Expr s)) = do

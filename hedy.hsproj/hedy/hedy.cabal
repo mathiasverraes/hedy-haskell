@@ -8,10 +8,11 @@ x-last-ide-version: HfM1.7.0
 executable hedy
     main-is: Main.hs
     other-modules:
+        Level1Parser
         Level1Lang
-        Level1b
     default-language: Haskell2010
     build-depends:
-        mtl -any,
+        megaparsec -any,
         base -any,
-        megaparsec -any
+        raw-strings-qq -any,
+        mtl -any

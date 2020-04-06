@@ -17,7 +17,7 @@ cmd [filename] = do
     case (parse filename body) of 
         Right program -> run program
         Left errorBundle -> putStrLn $ errorBundlePretty errorBundle
-    
+cmd _      = usage  >> die "Wrong number of arguments"      
 
 usage   = putStrLn "Usage: hedy [-vh] [file]"
 version = putStrLn "Hedy 0.1"

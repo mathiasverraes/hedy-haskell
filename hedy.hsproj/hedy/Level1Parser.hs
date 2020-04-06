@@ -13,7 +13,8 @@ import qualified Text.Megaparsec.Char.Lexer as L
 type Parser = Parsec Void String
 
 parse :: String -> String -> Either (ParseErrorBundle String Void) Program
-parse = M.parse pAll
+parse filename body = M.parse pAll filename (body ++"\n") 
+-- @todo the "\n" is a little hack, figure out how to get rid of it
 
 sampleProgram' = [r|print Hello world!
 ask What is your name?
@@ -44,11 +45,11 @@ pAll :: Parser Program
 pAll = do
     sc -- for all space at the start of the file
     program <- many (pPrint <|> pAsk <|> pEcho)
-    sc
-    eof
+--    eof
     return program
 
 -- https://markkarpov.com/tutorial/megaparsec.html#lexing
+-- space consumer
 sc :: Parser ()
 sc = L.space
   space1

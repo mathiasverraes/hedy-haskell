@@ -1,6 +1,6 @@
 module Main where
 
-import Level1a    
+import Level1Lang
 
-main = main'
+main = run sampleProgram
         

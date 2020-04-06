@@ -25,6 +25,7 @@ pPrint :: Parser Stmt
 pPrint = do
     keyword "print"
     expr <- someTill printChar eol
+    sc
     return $ Print (Expr expr)
     
 -- We could remove duplication here, but these will evolve separately anyway
@@ -33,12 +34,14 @@ pAsk :: Parser Stmt
 pAsk = do
     keyword "ask"
     expr <- someTill printChar eol
+    sc
     return $ Ask (Expr expr)
 
 pEcho :: Parser Stmt
 pEcho = do
     keyword "echo"
     expr <- someTill printChar eol
+    sc
     return $ Echo (Expr expr)
     
 pAll :: Parser Program

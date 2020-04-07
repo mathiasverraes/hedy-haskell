@@ -1,5 +1,5 @@
 {-# LANGUAGE QuasiQuotes #-}
-module Level1Parser (parse) where
+module Level1Parser where
     
 import Level1Lang
 import Text.RawString.QQ

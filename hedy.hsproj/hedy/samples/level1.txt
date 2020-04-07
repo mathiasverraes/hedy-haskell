@@ -1,0 +1,8 @@
+// Line comments
+/* 
+ * Block comments
+ */
+
+print Hello world!
+ask What is your name? 
+echo Hi 

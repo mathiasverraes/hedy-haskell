@@ -4,16 +4,28 @@ version: 0.1
 stability: experimental
 x-ghc-framework-version: 8.6.4-13.14-2
 x-last-ide-version: HfM1.7.0
+extra-source-files:
+    samples/level1.txt
 
 executable hedy
     main-is: Main.hs
     other-modules:
-        Level1Parser
         Level1
+        Level1Parser
         Level1Lang
     default-language: Haskell2010
     build-depends:
-        megaparsec -any,
-        base -any,
         raw-strings-qq -any,
+        base -any,
+        megaparsec -any,
         mtl -any
+
+executable test
+    main-is: Spec.hs
+    other-modules:
+        Level1Spec
+    default-language: Haskell2010
+    build-depends:
+        raw-strings-qq -any,
+        base -any,
+        hspec -any

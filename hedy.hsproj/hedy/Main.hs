@@ -1,6 +1,7 @@
 module Main where
 
 import qualified Level1
+--import qualified Level2
 
 import Text.Megaparsec.Error
 import System.Environment
@@ -8,7 +9,8 @@ import System.Exit
 
 main = getArgs >>= cmd
 
-cmd ["1", filename]  = go filename Level1.parse Level1.run                
+cmd ["1", filename]  = go filename Level1.parse Level1.run 
+--cmd ["2", filename]  = go filename Level2.parse Level2.run
 cmd ["-h"] = usage   >> exitSuccess
 cmd ["-v"] = version >> exitSuccess
 cmd _      = usage   >> die "Wrong arguments"      

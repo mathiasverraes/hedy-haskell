@@ -3,18 +3,11 @@ module Level1Lang where
 import Control.Monad.State.Lazy
 import System.Environment
 
-sampleProgram :: Program
-sampleProgram = 
-    [ Print (Expr "Hello world!")
-    , Ask (Expr "What is your name? ")
-    , Echo (Expr "Hi ")
-    ]
-
-data Expr = Expr String deriving (Show)
+data Expr = Expr String deriving (Show, Eq)
 data Stmt = Print Expr
             | Ask Expr
             | Echo Expr
-            deriving (Show)
+            deriving (Show, Eq)
 type Program = [Stmt]    
 
 exec :: Stmt -> StateT String IO ()

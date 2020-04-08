@@ -1,53 +1,59 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Level1Spec (spec) where
     
+import Flow
 import Text.RawString.QQ
 import Test.Hspec
 import Data.Either
+import Text.Megaparsec.Error
+
 
 import Level1
 
 spec :: Spec
 spec = do 
     describe "Level1Lang" $ do
+        it "parses a single line" $ do         
+            parse "" "print Hello world!" `shouldBe` Right [Print (Expr "Hello world!")]
+            
         it "parses a simple hedy script" $ do         
-            parse "test" script01 `shouldBe` Right ast01
+            parse "" simpleScript `shouldBe` Right simpleAST
 
         it "fails for bad input" $ do    
-            parse "test" script02 `shouldSatisfy` isLeft
+            let parsed = parse "test" badScript
+            either errorBundlePretty show parsed `shouldContain` "expecting \"ask\", \"echo\", \"print\", or end of input"
             
         it "ignores comments" $ do
-            parse "test" script03 `shouldBe` Right ast03
+            parse "" withComments `shouldBe` Right simpleAST
 
-script01 = [r|
+simpleScript = [r|
 print Hello world!
 ask What's for dinner?
 echo Enjoy your 
 |]
 
-ast01 = 
+simpleAST = 
     [ Print (Expr "Hello world!")
     , Ask (Expr "What's for dinner?")
     , Echo (Expr "Enjoy your ")
     ]   
 
-script02 = [r|
+badScript = [r|
 print Hello world!
 Bad input
 echo Enjoy your 
 |]   
 
 
-script03 = [r|
-print Hello
+withComments = [r|
+print Hello world!
+
 // line comment
+ask What's for dinner?
+
 /*
  * block comment
  */
-print world
-|]   
 
-ast03 = 
-    [ Print (Expr "Hello")
-    , Print (Expr "world")
-    ]   
+echo Enjoy your 
+|]   

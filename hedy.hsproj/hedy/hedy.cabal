@@ -10,15 +10,15 @@ extra-source-files:
 executable hedy
     main-is: Main.hs
     other-modules:
-        Level1
         Level1Lang
+        Level1
         Level1Parser
     default-language: Haskell2010
     build-depends:
         raw-strings-qq -any,
         base -any,
-        megaparsec -any,
-        mtl -any
+        mtl -any,
+        megaparsec -any
 
 executable test
     main-is: Spec.hs
@@ -27,7 +27,6 @@ executable test
     default-language: Haskell2010
     build-depends:
         megaparsec -any,
-        flow -any,
         raw-strings-qq -any,
         base -any,
         hspec -any

@@ -1,3 +1,4 @@
 hedy.hsproj/hedy/.stack-work/
 hedy.hsproj/hedy/dist/
 hedy.hsproj/hedy/stack.yaml.lock
+*.hsplay

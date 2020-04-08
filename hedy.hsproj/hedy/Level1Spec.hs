@@ -1,12 +1,10 @@
 {-# LANGUAGE QuasiQuotes #-}
 module Level1Spec (spec) where
     
-import Flow
 import Text.RawString.QQ
 import Test.Hspec
 import Data.Either
 import Text.Megaparsec.Error
-
 
 import Level1
 

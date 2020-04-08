@@ -14,7 +14,7 @@ exec :: Stmt -> StateT String IO ()
 exec (Print (Expr s)) = do
     lift $ putStrLn s
 exec (Ask (Expr s)) = do
-    lift $ putStr s
+    lift $ putStrLn s
     answer <- lift getLine
     put answer
 exec (Echo (Expr s)) = do

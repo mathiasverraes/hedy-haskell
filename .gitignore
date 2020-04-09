@@ -3,3 +3,4 @@
 .DS_Store
 out/
 /hedy-haskell.iml
+dist-newstyle/

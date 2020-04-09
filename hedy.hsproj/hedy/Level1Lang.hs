@@ -21,7 +21,7 @@ exec (Echo (Expr s)) = do
     answer <- get
     lift $ putStrLn (s ++ answer)
 
-execAll :: [Stmt] -> StateT String IO ()
+execAll :: Program -> StateT String IO ()
 execAll = mapM_ exec
 
 run :: Program -> IO ()

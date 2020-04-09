@@ -12,24 +12,25 @@ executable hedy
     main-is: Main.hs
     other-modules:
         Level1Lang
+        Level2Lang
         Level2
         Level1
         Level1Parser
-        Level2Lang
     default-language: Haskell2010
     build-depends:
-        megaparsec -any,
-        base -any,
         raw-strings-qq -any,
+        base -any,
+        containers -any,
+        flow -any,
         mtl -any,
         text -any,
-        containers -any
+        megaparsec -any
 
 executable test
     main-is: Spec.hs
     other-modules:
-        Level1Spec
         Level2Spec
+        Level1Spec
     default-language: Haskell2010
     build-depends:
         base -any,

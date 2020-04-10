@@ -1,4 +1,6 @@
-hedy.hsproj/hedy/.stack-work/
-hedy.hsproj/hedy/dist/
-hedy.hsproj/hedy/stack.yaml.lock
-*.hsplay
+.idea/
+.stack-work/
+.DS_Store
+out/
+/hedy-haskell.iml
+dist-newstyle/

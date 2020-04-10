@@ -1,0 +1,84 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 8be0f0522107373e92aacae4a1a495bb1fe64b5a336bfb80ec8784ffb0583707
+
+name:           hedy-haskell
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/hedy-haskell#readme>
+homepage:       https://github.com/githubuser/hedy-haskell#readme
+bug-reports:    https://github.com/githubuser/hedy-haskell/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/hedy-haskell
+
+library
+  exposed-modules:
+      Level1
+      Level1Lang
+      Level1Parser
+      Level2
+      Level2Lang
+      Level2Parser
+  other-modules:
+      Paths_hedy_haskell
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , text
+  default-language: Haskell2010
+
+executable hedy-haskell-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_hedy_haskell
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hedy-haskell
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , text
+  default-language: Haskell2010
+
+test-suite hedy-haskell-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Level1Spec
+      Level2Spec
+      Paths_hedy_haskell
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , containers
+    , hedy-haskell
+    , hspec
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , text
+  default-language: Haskell2010

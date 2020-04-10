@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 733bc5fe270772e5844b0e0895b96db482462f092674de1f2faa5d26e8ffb803
+-- hash: 8be0f0522107373e92aacae4a1a495bb1fe64b5a336bfb80ec8784ffb0583707
 
 name:           hedy-haskell
 version:        0.1.0.0
@@ -38,6 +38,11 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , text
   default-language: Haskell2010
 
 executable hedy-haskell-exe
@@ -49,7 +54,12 @@ executable hedy-haskell-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , hedy-haskell
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , text
   default-language: Haskell2010
 
 test-suite hedy-haskell-test
@@ -64,5 +74,11 @@ test-suite hedy-haskell-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , containers
     , hedy-haskell
+    , hspec
+    , megaparsec
+    , mtl
+    , raw-strings-qq
+    , text
   default-language: Haskell2010

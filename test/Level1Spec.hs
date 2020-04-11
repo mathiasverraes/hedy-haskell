@@ -14,17 +14,17 @@ spec :: Spec
 spec =
     describe "Level1Lang" $ do
         it "parses a single line"
-            <| parse pAll "" "print Hello world!" `shouldParse` [Print (Expr "Hello world!")]
+            <| parse pProgram "" "print Hello world!" `shouldParse` [Print (Expr "Hello world!")]
         it "parses a simple hedy script"  
-            <| parse pAll "" simpleScript `shouldParse` simpleAST
+            <| parse pProgram "" simpleScript `shouldParse` simpleAST
         it "parses empty lines"
-            <| parse pAll "" emptyLines `shouldParse` simpleAST    
+            <| parse pProgram "" emptyLines `shouldParse` simpleAST    
         it "accepts empty statements"  
-            <| parse pAll "" "print" `shouldParse` [Print (Expr "")]
+            <| parse pProgram "" "print" `shouldParse` [Print (Expr "")]
         it "fails for bad input"  
-            <| parse pAll "" `shouldFailOn` badScript
+            <| parse pProgram "" `shouldFailOn` badScript
         it "fails for bad input2"  
-            <| parse pAll "" `shouldFailOn` badScript2
+            <| parse pProgram "" `shouldFailOn` badScript2
             
 simpleScript = [r|print Hello world!
 ask What's for dinner?

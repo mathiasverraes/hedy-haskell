@@ -30,8 +30,8 @@ pPrint = pStmt "print" Print
 pAsk = pStmt "ask" Ask
 pEcho = pStmt "echo" Echo
 
-pAll :: Parser Program
-pAll = do
+pProgram :: Parser Program
+pProgram = do
     space
     program <- many (pPrint <|> pAsk <|> pEcho)
     eof

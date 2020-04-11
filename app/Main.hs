@@ -16,7 +16,7 @@ cmd ["-h"] = usage >> exitSuccess
 cmd ["-v"] = version >> exitSuccess
 cmd ["1", filename] = do
     body <- readFile filename
-    let parsed = L1.parse L1.pAll filename body
+    let parsed = L1.parse L1.pProgram filename body
     case parsed of
         Right program -> L1.run program >> exitSuccess
         Left error    -> M.errorBundlePretty error |> die

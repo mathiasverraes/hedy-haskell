@@ -4,14 +4,14 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 8be0f0522107373e92aacae4a1a495bb1fe64b5a336bfb80ec8784ffb0583707
+-- hash: 7a48454e6cefc3afdf460ca4e2c3edc642970af88b0587d33877bb99ceed54cc
 
 name:           hedy-haskell
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/hedy-haskell#readme>
-homepage:       https://github.com/githubuser/hedy-haskell#readme
-bug-reports:    https://github.com/githubuser/hedy-haskell/issues
-author:         Author name here
+description:    Please see the README on GitHub at <https://github.com/mathiasverraes/hedy-haskell#readme>
+homepage:       https://github.com/mathiasverraes/hedy-haskell#readme
+bug-reports:    https://github.com/mathiasverraes/hedy-haskell/issues
+author:         Mathias Verraes
 maintainer:     example@example.com
 copyright:      2020 Author name here
 license:        BSD3
@@ -22,7 +22,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/hedy-haskell
+  location: https://github.com/mathiasverraes/hedy-haskell
 
 library
   exposed-modules:
@@ -39,6 +39,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , hspec
     , megaparsec
     , mtl
     , raw-strings-qq
@@ -56,6 +57,7 @@ executable hedy-haskell-exe
       base >=4.7 && <5
     , containers
     , hedy-haskell
+    , hspec
     , megaparsec
     , mtl
     , raw-strings-qq
@@ -64,7 +66,7 @@ executable hedy-haskell-exe
 
 test-suite hedy-haskell-test
   type: exitcode-stdio-1.0
-  main-is: Spec.hs
+  main-is: Main.hs
   other-modules:
       Level1Spec
       Level2Spec

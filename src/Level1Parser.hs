@@ -26,13 +26,15 @@ pStmt keyword stmtConstructor = do
     expr <- (stmt <|> nakedStmt) <?> "a statement"
     return $ stmtConstructor expr
 
+pPrint, pAsk, pEcho, pNoOp :: Parser Stmt
 pPrint = pStmt "print" Print
 pAsk = pStmt "ask" Ask
 pEcho = pStmt "echo" Echo
+pNoOp = hidden (some spaceChar) >> return NoOp
 
 pProgram :: Parser Program
 pProgram = do
     space
-    program <- many (pPrint <|> pAsk <|> pEcho)
+    program <- many (pNoOp <|> pPrint <|> pAsk <|> pEcho)
     eof
     return program

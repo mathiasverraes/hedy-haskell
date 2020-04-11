@@ -4,13 +4,15 @@ import           Control.Monad.State.Lazy
 import           System.Environment
 
 newtype Expr = Expr String deriving (Show, Eq)
-data Stmt = Print Expr
+data Stmt = NoOp
+            | Print Expr
             | Ask Expr
             | Echo Expr
             deriving (Show, Eq)
 type Program = [Stmt]
 
 exec :: Stmt -> StateT String IO ()
+exec NoOp = return ()
 exec (Print (Expr s)) = lift $ putStrLn s
 exec (Ask (Expr s)) = do
     lift $ putStrLn s

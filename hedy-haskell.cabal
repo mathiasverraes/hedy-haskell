@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: df585be90eaee1ea12044ea7517ce5cd3ab2ba8f14d3bcf3d5fde0a8dd21ef29
+-- hash: cf012903806f226ba4ec490039ab8adb379bd9cf77b776cbd5278117028a6b50
 
 name:           hedy-haskell
 version:        0.1.0.0
@@ -29,9 +29,11 @@ library
       Level1
       Level1Lang
       Level1Parser
+      Level1Spec
       Level2
       Level2Lang
       Level2Parser
+      Level2Spec
   other-modules:
       Paths_hedy_haskell
   hs-source-dirs:
@@ -41,6 +43,7 @@ library
     , containers
     , flow
     , hspec
+    , hspec-megaparsec
     , megaparsec
     , mtl
     , raw-strings-qq
@@ -60,6 +63,7 @@ executable hedy-haskell-exe
     , flow
     , hedy-haskell
     , hspec
+    , hspec-megaparsec
     , megaparsec
     , mtl
     , raw-strings-qq
@@ -70,8 +74,6 @@ test-suite hedy-haskell-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Level1Spec
-      Level2Spec
       Paths_hedy_haskell
   hs-source-dirs:
       test

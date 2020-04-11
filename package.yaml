@@ -28,6 +28,7 @@ dependencies:
 - text -any
 - hspec -any
 - flow -any
+- hspec-megaparsec
 library:
   source-dirs:
     - src

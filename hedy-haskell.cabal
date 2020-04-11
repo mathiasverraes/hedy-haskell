@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7a48454e6cefc3afdf460ca4e2c3edc642970af88b0587d33877bb99ceed54cc
+-- hash: f5c82bfddb7f18db2226a131f01abe7052439623cd12fc9d7a7a4071098d93f9
 
 name:           hedy-haskell
 version:        0.1.0.0
@@ -39,6 +39,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , flow
     , hspec
     , megaparsec
     , mtl
@@ -56,6 +57,7 @@ executable hedy-haskell-exe
   build-depends:
       base >=4.7 && <5
     , containers
+    , flow
     , hedy-haskell
     , hspec
     , megaparsec
@@ -77,8 +79,10 @@ test-suite hedy-haskell-test
   build-depends:
       base >=4.7 && <5
     , containers
+    , flow
     , hedy-haskell
     , hspec
+    , hspec-megaparsec
     , megaparsec
     , mtl
     , raw-strings-qq

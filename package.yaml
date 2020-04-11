@@ -27,6 +27,7 @@ dependencies:
 - containers -any
 - text -any
 - hspec -any
+- flow -any
 library:
   source-dirs:
     - src
@@ -53,3 +54,4 @@ tests:
     dependencies:
     - hedy-haskell
     - hspec
+    - hspec-megaparsec

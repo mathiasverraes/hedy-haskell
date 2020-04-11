@@ -1,27 +1,23 @@
 module Main where
 
-import qualified Level1
---import qualified Level2
+import           Flow
+import qualified Level1                as L1
+import           System.Environment
+import           System.Exit
+import           Text.Megaparsec.Error as M
 
-import Text.Megaparsec.Error
-import System.Environment
-import System.Exit
+version = putStrLn "Hedy 0.1"
+
+usage = putStrLn "Usage: hedy [-vh] [LEVEL FILE]"
 
 main = getArgs >>= cmd
 
-cmd ["1", filename]  = go filename Level1.parse Level1.run 
---cmd ["2", filename]  = go filename Level2.parse Level2.run
-cmd ["-h"] = usage   >> exitSuccess
+cmd ["-h"] = usage >> exitSuccess
 cmd ["-v"] = version >> exitSuccess
-cmd _      = usage   >> die "Wrong arguments"      
-
-usage   = putStrLn "Usage: hedy [-vh] [LEVEL FILE]"
-version = putStrLn "Hedy 0.1"
-
-
-go filename parse run = do
+cmd ["1", filename] = do
     body <- readFile filename
-    case (parse filename body) of 
-        Right program -> run program >> exitSuccess
-        Left errorBundle -> die $ errorBundlePretty errorBundle
-
+    let parsed = L1.parse L1.pAll filename body
+    case parsed of
+        Right program -> L1.run program >> exitSuccess
+        Left error    -> M.errorBundlePretty error |> die
+cmd _ = usage >> die "Wrong arguments"

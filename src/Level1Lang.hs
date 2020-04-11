@@ -1,18 +1,17 @@
 module Level1Lang where
-    
-import Control.Monad.State.Lazy
-import System.Environment
 
-data Expr = Expr String deriving (Show, Eq)
+import           Control.Monad.State.Lazy
+import           System.Environment
+
+newtype Expr = Expr String deriving (Show, Eq)
 data Stmt = Print Expr
             | Ask Expr
             | Echo Expr
             deriving (Show, Eq)
-type Program = [Stmt]    
+type Program = [Stmt]
 
 exec :: Stmt -> StateT String IO ()
-exec (Print (Expr s)) = do
-    lift $ putStrLn s
+exec (Print (Expr s)) = lift $ putStrLn s
 exec (Ask (Expr s)) = do
     lift $ putStrLn s
     answer <- lift getLine

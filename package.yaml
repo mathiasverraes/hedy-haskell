@@ -45,7 +45,7 @@ executables:
 
 tests:
   hedy-haskell-test:
-    main:                Main.hs
+    main:                Spec.hs
     source-dirs:         test
     ghc-options:
     - -threaded

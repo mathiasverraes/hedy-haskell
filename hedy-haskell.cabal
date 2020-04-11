@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f5c82bfddb7f18db2226a131f01abe7052439623cd12fc9d7a7a4071098d93f9
+-- hash: df585be90eaee1ea12044ea7517ce5cd3ab2ba8f14d3bcf3d5fde0a8dd21ef29
 
 name:           hedy-haskell
 version:        0.1.0.0
@@ -68,7 +68,7 @@ executable hedy-haskell-exe
 
 test-suite hedy-haskell-test
   type: exitcode-stdio-1.0
-  main-is: Main.hs
+  main-is: Spec.hs
   other-modules:
       Level1Spec
       Level2Spec

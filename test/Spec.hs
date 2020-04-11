@@ -1,4 +1,3 @@
-module Main where
 import qualified Level1Spec
 import qualified Level2Spec
 import           Test.Hspec

@@ -1,5 +1,6 @@
 module Level1Parser where
 
+import           Control.Monad.Combinators
 import           Data.Void
 import           Level1Lang
 import           Text.Megaparsec            hiding (parse)
@@ -13,18 +14,22 @@ parse :: Parser Program -> String -> String -> Either (ParseErrorBundle String V
 parse parser filename body = M.parse parser filename (body ++ "\n")
 -- @todo the "\n" is a little hack, figure out how to get rid of it
 
-pString :: Parser String
-pString = many (alphaNumChar <|> markChar <|> punctuationChar <|> symbolChar <|> char ' ' <|> char '\t') <?> "a string"
+pSpace :: Parser Char
+pSpace = char ' ' <|> char '\t'
 
-pExpr :: Parser Expr
-pExpr = Expr <$> pString <?> "an expression"
+pString :: Parser String
+pString = many (alphaNumChar <|> markChar <|> punctuationChar <|> symbolChar <|> pSpace) <?> "a string"
+
+pEmpty :: Parser String
+pEmpty = return ""
 
 pStmt :: String -> (Expr -> Stmt) -> Parser Stmt
 pStmt keyword stmtConstructor = do
-    let stmt = string keyword *> string " " *> pExpr <* eol
-    let nakedStmt = Expr <$> hidden (string (keyword ++ "\n") *> string "")
-    expr <- (stmt <|> nakedStmt) <?> "a statement"
-    return $ stmtConstructor expr
+    let stmt = string keyword *> pSpace *> pString <* eol
+    let nakedStmt = string keyword *> eol
+    let withSpace = string keyword *> many pSpace <* eol
+    s <- (try stmt <|> try withSpace <|> nakedStmt) <?> "a statement"
+    return $ stmtConstructor (Expr s)
 
 pPrint, pAsk, pEcho, pNoOp :: Parser Stmt
 pPrint = pStmt "print" Print

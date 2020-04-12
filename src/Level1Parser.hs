@@ -1,6 +1,5 @@
 module Level1Parser where
 
-import           Control.Monad.Combinators
 import           Data.Void
 import           Level1Lang
 import           Text.Megaparsec            hiding (parse)

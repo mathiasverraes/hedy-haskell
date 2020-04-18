@@ -2,7 +2,7 @@ module Level2.Parser where
 
 import qualified Data.Map.Strict            as Map
 import           Data.Void
-import           Level2.Interpreter
+import           Level2.AST
 import           Text.Megaparsec            hiding (parse)
 import qualified Text.Megaparsec            as M
 import           Text.Megaparsec.Char
@@ -12,8 +12,8 @@ type Parser = Parsec Void String
 
 parse :: Parser a -> String -> String -> Either (ParseErrorBundle String Void) a
 parse parser filename body = M.parse parser filename (body ++ "\n")
--- @todo the "\n" is a little hack, figure out how to get rid of it
 
+-- @todo the "\n" is a little hack, figure out how to get rid of it
 pSpace :: Parser Char
 pSpace = char ' ' <|> char '\t'
 

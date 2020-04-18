@@ -6,20 +6,8 @@ import           Control.Monad.State.Lazy
 import qualified Data.Map.Strict          as M
 import           Data.Maybe
 import qualified Data.Text                as T
+import           Level2.AST
 import           System.Environment
-
-type Chunk = String
-
-type VarName = String
-
-data Stmt
-    = Print [Chunk]
-    | Is VarName String
-    | Ask VarName String
-    | NoOp
-    deriving (Show, Eq)
-
-type Program = [Stmt]
 
 type VarDictionary = M.Map VarName String
 

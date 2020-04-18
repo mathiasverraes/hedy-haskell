@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2c712e815770bc7fb85a165136c4c7464ced77470766e30350de9fba4c9c4abd
+-- hash: 1071e6e2e9d2e66d8223c602852a1acab8906efb6b63af89838dbfe7d692166f
 
 name:           hedy-haskell
 version:        0.2.0
@@ -27,10 +27,12 @@ source-repository head
 library
   exposed-modules:
       Level1
+      Level1.AST
       Level1.Interpreter
       Level1.Parser
       Level1.Spec
       Level2
+      Level2.AST
       Level2.Interpreter
       Level2.Parser
       Level2.Spec

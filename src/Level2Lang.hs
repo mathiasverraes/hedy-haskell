@@ -26,19 +26,19 @@ type Program = [Stmt]
 
 type VarDictionary = M.Map VarName String
 
-replaceVars :: VarDictionary -> [Chunk] -> String
-replaceVars vars = foldl go ""
+replaceVarsInChunks :: VarDictionary -> [Chunk] -> String
+replaceVarsInChunks dict = foldl go ""
   where
     go :: String -> Chunk -> String
     go init (Var varName) = do
-        let val = M.lookup varName vars
+        let val = M.lookup varName dict
         init ++ fromMaybe "" val
     go init (Literal str) = init ++ str
 
 exec :: Stmt -> StateT VarDictionary IO ()
 exec (Print chunks) = do
     vars <- get
-    let str = replaceVars vars chunks
+    let str = replaceVarsInChunks vars chunks
     exec (PrintLiteral str)
 exec (PrintLiteral s) = lift $ putStrLn s
 exec (Ask varName str) = do

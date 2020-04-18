@@ -24,9 +24,9 @@ data Stmt
 
 type Program = [Stmt]
 
-type Vars = M.Map VarName String
+type VarDictionary = M.Map VarName String
 
-replaceVars :: Vars -> [Chunk] -> String
+replaceVars :: VarDictionary -> [Chunk] -> String
 replaceVars vars = foldl go ""
   where
     go :: String -> Chunk -> String
@@ -35,7 +35,7 @@ replaceVars vars = foldl go ""
         init ++ fromMaybe "" val
     go init (Literal str) = init ++ str
 
-exec :: Stmt -> StateT Vars IO ()
+exec :: Stmt -> StateT VarDictionary IO ()
 exec (Print chunks) = do
     vars <- get
     let str = replaceVars vars chunks
@@ -47,7 +47,7 @@ exec (Ask varName str) = do
     modify $ M.insert varName answer
 exec (Assign varName value) = modify $ M.insert varName value
 
-execAll :: Program -> StateT Vars IO ()
+execAll :: Program -> StateT VarDictionary IO ()
 execAll = mapM_ exec
 
 run :: Program -> IO ()

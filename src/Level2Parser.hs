@@ -4,6 +4,7 @@ import           Data.Void
 import           Level2Lang
 import           Text.Megaparsec            hiding (parse)
 import qualified Text.Megaparsec            as M
+import qualified Data.Map.Strict as Map
 import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
@@ -31,7 +32,7 @@ pStmt keyword stmtConstructor = do
     return $ stmtConstructor s
 
 pVarname :: Parser String
-pVarname = many alphaNumChar <?> "a variable name"
+pVarname = some alphaNumChar <?> "a variable name"
 
 pAssign :: Parser Stmt
 pAssign = do
@@ -56,3 +57,16 @@ pProgram = do
     --program <- many (pNoOp <|> pPrint <|> pAsk <|> pEcho)
     eof
     return undefined -- program
+
+literalToVars :: VarDictionary -> Parser Stmt
+literalToVars dict = do
+    let notVarname = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
+    tokens <- many (pVarname <|> notVarname)  
+    eol
+    let f :: VarDictionary -> String -> Chunk
+        f dict s =
+            if s `Map.member` dict
+                then Var s
+                else Literal s
+    return $ Print $ f dict <$> tokens
+       

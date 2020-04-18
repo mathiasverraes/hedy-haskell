@@ -36,11 +36,18 @@ spec =
             it "parses variable assignment" $ do
                 let ast = Assign "foo" "bar"
                 parse pAssign "" "foo is bar" `shouldParse` ast
-            xit "parses variables as chunks" $ do
+            it "parses variables as chunks" $ do
+                pending
                 let script = "name is Hedy;print Hello name!"
                 let expected = 
                         [ Assign "name" "Hedy" 
                         , Print [Literal "Hello ", Var "name", Literal "!"]]
                 parse pProgram "" script `shouldParse` expected
-
+        describe "Find Variables" $ do
+            it "splits a string literal into chunks based on variable names" $ do
+                let dict :: VarDictionary
+                    dict = M.fromList [("name", "Hedy"), ("time", "morning")]
+                let input = "Hello name, good time!\n"
+                let expected = Print [Literal "Hello", Literal " ", Var "name", Literal ", ", Literal "good", Literal " ", Var "time", Literal "!"]
+                parse (literalToVars dict) "" input `shouldParse` expected
 

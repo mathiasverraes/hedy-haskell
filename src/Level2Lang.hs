@@ -9,15 +9,15 @@ import qualified Data.Text                as T
 import           System.Environment
 
 data Chunk =
-    ChStr String
-    | ChVar VarName
+    Literal String
+    | Var VarName
     deriving (Show, Eq)
 
 type VarName = String
 
 data Stmt
     = Print [Chunk]
-    | PrintS String
+    | PrintLiteral String
     | Assign VarName String
     | Ask VarName String
     deriving (Show, Eq)
@@ -30,17 +30,17 @@ replaceVars :: Vars -> [Chunk] -> String
 replaceVars vars = foldl go ""
   where
     go :: String -> Chunk -> String
-    go init (ChVar varName) = do
+    go init (Var varName) = do
         let val = M.lookup varName vars
         init ++ fromMaybe "" val
-    go init (ChStr str) = init ++ str
+    go init (Literal str) = init ++ str
 
 exec :: Stmt -> StateT Vars IO ()
 exec (Print chunks) = do
     vars <- get
     let str = replaceVars vars chunks
-    exec (PrintS str)
-exec (PrintS s) = lift $ putStrLn s
+    exec (PrintLiteral str)
+exec (PrintLiteral s) = lift $ putStrLn s
 exec (Ask varName str) = do
     lift $ putStrLn str
     answer <- lift getLine

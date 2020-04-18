@@ -1,10 +1,10 @@
 module Level2Parser where
 
+import qualified Data.Map.Strict            as Map
 import           Data.Void
 import           Level2Lang
 import           Text.Megaparsec            hiding (parse)
 import qualified Text.Megaparsec            as M
-import qualified Data.Map.Strict as Map
 import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
@@ -42,31 +42,34 @@ pAssign = do
     pSpace
     value <- pString
     eol
-    return $ Assign varname value
+    return $ Is varname value
 
-pPrint = pStmt "print" PrintLiteral
+pPrint :: Parser Stmt
+pPrint = do
+    let stmt = string "print" *> pSpace *> pChunks <* eol
+    let withSpace :: Parser Chunk
+        withSpace = (: []) <$> string "print" *> many pSpace <* eol
+    let nakedStmt :: Parser Chunk
+        nakedStmt = (: []) <$> string "print" *> eol
+    --s <- (try stmt <|> try withSpace <|> nakedStmt) <?> "a string to print"
+    s <- stmt <?> "a string to print"
+    return $ Print s
+
+pNoOp :: Parser Stmt
+pNoOp = hidden (some spaceChar) >> eol >> return NoOp
+
 {-
-pPrint, pAsk, pEcho, pNoOp :: Parser Stmt
 pAsk = pStmt "ask" Ask
-pNoOp = hidden (some spaceChar) >> return NoOp
 -}
-
 pProgram :: Parser Program
 pProgram = do
     space
     --program <- many (pNoOp <|> pPrint <|> pAsk <|> pEcho)
+    program <- many (try pAssign <|> try pPrint <|> pNoOp)
     eof
-    return undefined -- program
+    return program
 
-literalToVars :: VarDictionary -> Parser Stmt
-literalToVars dict = do
+pChunks :: Parser [Chunk]
+pChunks = do
     let notVarname = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
-    tokens <- many (pVarname <|> notVarname)  
-    eol
-    let f :: VarDictionary -> String -> Chunk
-        f dict s =
-            if s `Map.member` dict
-                then Var s
-                else Literal s
-    return $ Print $ f dict <$> tokens
-       
+    many (pVarname <|> notVarname)

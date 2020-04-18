@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Level2Lang where
+module Level2.Interpreter where
 
 import           Control.Monad.State.Lazy
 import qualified Data.Map.Strict          as M

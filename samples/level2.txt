@@ -1,4 +1,4 @@
-name is Hedy.
+name is Hedy
 color is ask What is your favorite color?
 print name likes color
 animals is dog, cat, kangaroo

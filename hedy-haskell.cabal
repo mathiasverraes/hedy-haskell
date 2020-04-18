@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: cf012903806f226ba4ec490039ab8adb379bd9cf77b776cbd5278117028a6b50
+-- hash: 2c712e815770bc7fb85a165136c4c7464ced77470766e30350de9fba4c9c4abd
 
 name:           hedy-haskell
-version:        0.1.0.0
+version:        0.2.0
 description:    Please see the README on GitHub at <https://github.com/mathiasverraes/hedy-haskell#readme>
 homepage:       https://github.com/mathiasverraes/hedy-haskell#readme
 bug-reports:    https://github.com/mathiasverraes/hedy-haskell/issues
@@ -27,13 +27,13 @@ source-repository head
 library
   exposed-modules:
       Level1
-      Level1Lang
-      Level1Parser
-      Level1Spec
+      Level1.Interpreter
+      Level1.Parser
+      Level1.Spec
       Level2
-      Level2Lang
-      Level2Parser
-      Level2Spec
+      Level2.Interpreter
+      Level2.Parser
+      Level2.Spec
   other-modules:
       Paths_hedy_haskell
   hs-source-dirs:

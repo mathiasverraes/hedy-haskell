@@ -1,4 +1,4 @@
-module Level1 (module Level1Lang, module Level1Parser) where
+module Level1 (module Level1.Interpreter, module Level1.Parser) where
 
-import           Level1Lang
-import           Level1Parser
+import           Level1.Interpreter
+import           Level1.Parser

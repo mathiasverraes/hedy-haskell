@@ -1,7 +1,7 @@
-import qualified Level1Spec
-import qualified Level2Spec
+import qualified Level1.Spec as L1
+import qualified Level2.Spec as L2
 import           Test.Hspec
 
 main = hspec $ do
-    Level1Spec.spec
-    Level2Spec.spec
+    L1.spec
+    L2.spec

@@ -1,4 +1,4 @@
-module Level2Spec
+module Level2.Spec
     ( spec
     ) where
 

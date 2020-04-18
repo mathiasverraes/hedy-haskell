@@ -1,8 +1,8 @@
-module Level2Parser where
+module Level2.Parser where
 
 import qualified Data.Map.Strict            as Map
 import           Data.Void
-import           Level2Lang
+import           Level2.Interpreter
 import           Text.Megaparsec            hiding (parse)
 import qualified Text.Megaparsec            as M
 import           Text.Megaparsec.Char

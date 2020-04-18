@@ -1,4 +1,4 @@
-module Level2 (module Level2Lang, module Level2Parser) where
+module Level2 (module Level2.Interpreter, module Level2.Parser) where
 
-import           Level2Lang
-import           Level2Parser
+import           Level2.Interpreter
+import           Level2.Parser

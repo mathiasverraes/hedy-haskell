@@ -1,5 +1,5 @@
 {-# LANGUAGE QuasiQuotes #-}
-module Level1Spec (spec) where
+module Level1.Spec (spec) where
 
 import           Data.Either
 import           Flow

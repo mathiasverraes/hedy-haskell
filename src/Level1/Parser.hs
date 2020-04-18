@@ -1,7 +1,7 @@
-module Level1Parser where
+module Level1.Parser where
 
 import           Data.Void
-import           Level1Lang
+import           Level1.Interpreter
 import           Text.Megaparsec            hiding (parse)
 import qualified Text.Megaparsec            as M
 import           Text.Megaparsec.Char

@@ -1,4 +1,4 @@
-module Level1Lang where
+module Level1.Interpreter where
 
 import           Control.Monad.State.Lazy
 import           System.Environment

@@ -12,7 +12,8 @@ import           Text.RawString.QQ
 
 spec :: Spec
 spec =
-    describe "Level1" $ do
+    describe "Level1" $ 
+      describe "Parser" $ do
         it "parses a single line"
             <| parse pProgram "" "print Hello world!" `shouldParse` [Print (Expr "Hello world!")]
         it "fails for missing space"

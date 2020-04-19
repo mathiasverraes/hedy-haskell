@@ -1,6 +1,7 @@
 module Level2.Parser where
 
 import qualified Data.Map.Strict            as M
+import           Data.Maybe
 import           Data.Void
 import           Level2.AST
 import           Text.Megaparsec
@@ -46,14 +47,10 @@ pAssign = do
 
 pPrint :: Parser Stmt
 pPrint = do
-    let stmt = string "print" *> pSpace *> pChunks <* pEnd
-    let withSpace :: Parser Chunk
-        withSpace = (: []) <$> string "print" *> many pSpace <* pEnd
-    let nakedStmt :: Parser Chunk
-        nakedStmt = (: []) <$> string "print" *> pEnd
-    --s <- (try stmt <|> try withSpace <|> nakedStmt) <?> "a string to print"
-    s <- stmt <?> "a string to print"
-    return $ Print s
+    string "print"
+    chunks <- optional (pSpace *> pChunks)  <?> "a string to print"
+    pEnd
+    return $ Print $ fromMaybe [""] chunks
 
 pNoOp :: Parser Stmt
 pNoOp = hidden (some spaceChar) >> pEnd >> return NoOp

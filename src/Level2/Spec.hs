@@ -38,6 +38,9 @@ spec =
             it "parses print" $ do
                 let ast = Print ["Hello", " ", "Hedy", "!"]
                 parse pPrint "" "print Hello Hedy!" `shouldParse` ast
+            it "parses naked prints" $ do
+                let ast = [Print ["foo"], Print [""]]
+                parse pProgram "" "print foo\nprint\n" `shouldParse` ast    
             it "parses variable assignment" $ do
                 let ast = Is "foo" "bar"
                 parse pAssign "" "foo is bar" `shouldParse` ast

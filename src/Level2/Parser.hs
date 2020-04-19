@@ -26,22 +26,22 @@ pVarName, pNotVarName :: Parser String
 pVarName = some alphaNumChar <?> "a variable name"
 pNotVarName = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
 
-pAssign :: Parser Stmt
-pAssign = do
-    varname <- pVarName
-    pSpace
-    string "is"
-    pSpace
-    value <- pLiteral
-    pEnd
-    return $ Is varname value
-
 pPrint :: Parser Stmt
 pPrint = do
     string "print"
     chunks <- optional (pSpace *> pChunks)  <?> "a string to print"
     pEnd
     return $ Print $ fromMaybe [""] chunks
+
+pIs :: Parser Stmt
+pIs = do
+    varName <- pVarName
+    pSpace
+    string "is"
+    pSpace
+    value <- pLiteral
+    pEnd
+    return $ Is varName value
 
 pAsk :: Parser Stmt
 pAsk = do
@@ -55,14 +55,13 @@ pAsk = do
     pEnd
     return $ Ask varName literal
 
-
 pNoOp :: Parser Stmt
 pNoOp = hidden (some spaceChar) >> pEnd >> return NoOp
 
 pProgram :: Parser Program
 pProgram = do
     space
-    program <- many (try pAssign <|> try pPrint <|> pNoOp)
+    program <- many (try pIs <|> try pPrint <|> pNoOp)
     eof
     return program
 

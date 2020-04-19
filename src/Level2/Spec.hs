@@ -45,13 +45,13 @@ spec =
           describe "is" $ do
             it "parses variable assignment" $ do
                 let ast = Is "foo" "bar"
-                parse pAssign "" "foo is bar" `shouldParse` ast
+                parse pIs "" "foo is bar" `shouldParse` ast
             it "parses variables as chunks" $ do
                 let script = "name is Hedy\nprint Hello name!"
                 let expected = [Is "name" "Hedy", Print ["Hello", " ", "name", "!"]]
                 parse pProgram "" script `shouldParse` expected
-          describe "ask" $ 
-            it "parses ask statements" $ do 
+          describe "ask" $
+            it "parses ask statements" $ do
                 let script = "name is ask What's your name?"
                 let ast = Ask "name" "What's your name?"
                 parse pAsk "" script `shouldParse` ast

@@ -3,60 +3,60 @@ module Level2.Parser where
 import qualified Data.Map.Strict            as M
 import           Data.Void
 import           Level2.AST
-import           Text.Megaparsec            hiding (parse)
-import qualified Text.Megaparsec            as P
+import           Text.Megaparsec
 import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
 type Parser = Parsec Void String
 
-parse :: Parser a -> String -> String -> Either (ParseErrorBundle String Void) a
-parse parser filename body = P.parse parser filename (body ++ "\n")
-
--- @todo the "\n" is a little hack, figure out how to get rid of it
 pSpace :: Parser Char
 pSpace = char ' ' <|> char '\t'
-
-pString :: Parser String
-pString = many (alphaNumChar <|> markChar <|> punctuationChar <|> symbolChar <|> pSpace) <?> "a string"
 
 pEmpty :: Parser String
 pEmpty = return ""
 
+pEnd :: Parser String
+pEnd = string "\n" <|> string "\r\n" <|> (string "" <* eof) <?> "the end of the line"
+
+pLiteral :: Parser String
+pLiteral = many (alphaNumChar <|> markChar <|> punctuationChar <|> symbolChar <|> pSpace) <?> "a string literal"
+
+pVarName, pNotVarName :: Parser String
+pVarName = some alphaNumChar <?> "a variable name"
+pNotVarName = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
+
 pStmt :: String -> (String -> Stmt) -> Parser Stmt
 pStmt keyword stmtConstructor = do
-    let stmt = string keyword *> pSpace *> pString <* eol
-    let nakedStmt = string keyword *> eol
-    let withSpace = string keyword *> many pSpace <* eol
+    let stmt = string keyword *> pSpace *> pLiteral <* pEnd
+    let nakedStmt = string keyword *> pEnd
+    let withSpace = string keyword *> many pSpace <* pEnd
     s <- (try stmt <|> try withSpace <|> nakedStmt) <?> "a statement"
     return $ stmtConstructor s
 
-pVarname :: Parser String
-pVarname = some alphaNumChar <?> "a variable name"
 
 pAssign :: Parser Stmt
 pAssign = do
-    varname <- pVarname
+    varname <- pVarName
     pSpace
     string "is"
     pSpace
-    value <- pString
-    eol
+    value <- pLiteral
+    pEnd
     return $ Is varname value
 
 pPrint :: Parser Stmt
 pPrint = do
-    let stmt = string "print" *> pSpace *> pChunks <* eol
+    let stmt = string "print" *> pSpace *> pChunks <* pEnd
     let withSpace :: Parser Chunk
-        withSpace = (: []) <$> string "print" *> many pSpace <* eol
+        withSpace = (: []) <$> string "print" *> many pSpace <* pEnd
     let nakedStmt :: Parser Chunk
-        nakedStmt = (: []) <$> string "print" *> eol
+        nakedStmt = (: []) <$> string "print" *> pEnd
     --s <- (try stmt <|> try withSpace <|> nakedStmt) <?> "a string to print"
     s <- stmt <?> "a string to print"
     return $ Print s
 
 pNoOp :: Parser Stmt
-pNoOp = hidden (some spaceChar) >> eol >> return NoOp
+pNoOp = hidden (some spaceChar) >> pEnd >> return NoOp
 
 {-
 pAsk = pStmt "ask" Ask
@@ -64,12 +64,9 @@ pAsk = pStmt "ask" Ask
 pProgram :: Parser Program
 pProgram = do
     space
-    --program <- many (pNoOp <|> pPrint <|> pAsk <|> pEcho)
     program <- many (try pAssign <|> try pPrint <|> pNoOp)
     eof
     return program
 
 pChunks :: Parser [Chunk]
-pChunks = do
-    let notVarname = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
-    many (pVarname <|> notVarname)
+pChunks = many (pVarName <|> pNotVarName)

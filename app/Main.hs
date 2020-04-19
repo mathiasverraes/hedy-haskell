@@ -6,6 +6,7 @@ import qualified Level2                as L2
 import           System.Environment
 import           System.Exit
 import           Text.Megaparsec.Error as M
+import           Text.Megaparsec
 
 version = putStrLn "Hedy 0.1"
 
@@ -23,7 +24,7 @@ cmd ["1", filename] = do
         Left error    -> M.errorBundlePretty error |> die
 cmd ["2", filename] = do
     body <- readFile filename
-    let parsed = L2.parse L2.pProgram filename body
+    let parsed = parse L2.pProgram filename body
     case parsed of
         Right program -> L2.run program >> exitSuccess
         Left error    -> M.errorBundlePretty error |> die

@@ -8,15 +8,11 @@ import           Flow
 import           Level2
 import           Test.Hspec
 import           Test.Hspec.Megaparsec
-import qualified Text.Megaparsec       as P
+import           Text.Megaparsec
 import           Text.Megaparsec.Error
 import           Text.RawString.QQ
 
-simpleAST =
-    [ Is "greeting" "Hello"
-    , Is "name" "Hedy"
-    , Print ["greeting", " ", "name", "!"]
-    ]
+simpleAST = [Is "greeting" "Hello", Is "name" "Hedy", Print ["greeting", " ", "name", "!"]]
 
 spec :: Spec
 spec =

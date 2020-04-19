@@ -22,9 +22,18 @@ spec =
                 let chunks = ["greeting", " ", "name", "!"]
                 let vars = M.fromList [("name", "Hedy"), ("greeting", "Hi")]
                 replaceVarsInChunks vars chunks `shouldBe` "Hi Hedy!"
-            it "replaces variables that occur twice" $ do pending
-            it "doesn't replaces variables recursively" $ do pending
-            it "doesn't replace substrings" $ do pending
+            it "replaces variables that occur twice" $ do
+                let chunks = ["foo", " and ", "foo"]
+                let vars = M.fromList [("foo", "bar")]
+                replaceVarsInChunks vars chunks `shouldBe` "bar and bar"
+            it "doesn't replaces variables recursively" $ do
+                let chunks = ["hi", " ", "foo"]
+                let vars = M.fromList [("foo", "bar"), ("bar", "buz")]
+                replaceVarsInChunks vars chunks `shouldBe` "hi bar"
+            it "doesn't replace substrings" $ do
+                let chunks = ["fool"]
+                let vars = M.fromList [("foo", "bar")]
+                replaceVarsInChunks vars chunks `shouldBe` "fool"
         describe "Parser" $ do
             it "parses print" $ do
                 let ast = Print ["Hello", " ", "Hedy", "!"]

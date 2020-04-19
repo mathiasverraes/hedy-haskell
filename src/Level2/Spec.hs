@@ -45,7 +45,6 @@ spec =
                 let ast = Is "foo" "bar"
                 parse pAssign "" "foo is bar" `shouldParse` ast
             it "parses variables as chunks" $ do
-                pending
-                let script = "name is Hedy;print Hello name!"
-                let expected = [Is "name" "Hedy", Print ["Hello ", "name", "!"]]
+                let script = "name is Hedy\nprint Hello name!"
+                let expected = [Is "name" "Hedy", Print ["Hello", " ", "name", "!"]]
                 parse pProgram "" script `shouldParse` expected

@@ -24,12 +24,16 @@ pLiteral = many (alphaNumChar <|> markChar <|> punctuationChar <|> symbolChar <|
 
 pVarName, pNotVarName :: Parser String
 pVarName = some alphaNumChar <?> "a variable name"
+
 pNotVarName = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
+
+pChunks :: Parser [Chunk]
+pChunks = many (pVarName <|> pNotVarName)
 
 pPrint :: Parser Stmt
 pPrint = do
     string "print"
-    chunks <- optional (pSpace *> pChunks)  <?> "a string to print"
+    chunks <- optional (pSpace *> pChunks) <?> "a string to print"
     pEnd
     return $ Print $ fromMaybe [""] chunks
 
@@ -59,11 +63,9 @@ pNoOp :: Parser Stmt
 pNoOp = hidden (some spaceChar) >> pEnd >> return NoOp
 
 pProgram :: Parser Program
-pProgram = do
-    space
-    program <- many (try pIs <|> try pPrint <|> pNoOp)
-    eof
-    return program
-
-pChunks :: Parser [Chunk]
-pChunks = many (pVarName <|> pNotVarName)
+pProgram =
+    let statements = [pAsk, pIs, pPrint, pNoOp]
+     in do space
+           program <- many $ choice (try <$> statements)
+           eof
+           return program

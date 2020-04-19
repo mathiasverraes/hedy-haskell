@@ -35,23 +35,23 @@ spec =
                 let vars = M.fromList [("foo", "bar")]
                 replaceVarsInChunks vars chunks `shouldBe` "fool"
         describe "Parser" $ do
-          describe "print" $ do
-            it "parses print" $ do
-                let ast = Print ["Hello", " ", "Hedy", "!"]
-                parse pPrint "" "print Hello Hedy!" `shouldParse` ast
-            it "parses naked prints" $ do
-                let ast = [Print ["foo"], Print [""]]
-                parse pProgram "" "print foo\nprint\n" `shouldParse` ast
-          describe "is" $ do
-            it "parses variable assignment" $ do
-                let ast = Is "foo" "bar"
-                parse pIs "" "foo is bar" `shouldParse` ast
-            it "parses variables as chunks" $ do
-                let script = "name is Hedy\nprint Hello name!"
-                let expected = [Is "name" "Hedy", Print ["Hello", " ", "name", "!"]]
-                parse pProgram "" script `shouldParse` expected
-          describe "ask" $
-            it "parses ask statements" $ do
-                let script = "name is ask What's your name?"
-                let ast = Ask "name" "What's your name?"
-                parse pAsk "" script `shouldParse` ast
+            describe "print" $ do
+                it "parses print" $ do
+                    let ast = Print ["Hello", " ", "Hedy", "!"]
+                    parse pPrint "" "print Hello Hedy!" `shouldParse` ast
+                it "parses naked prints" $ do
+                    let ast = [Print ["foo"], Print [""]]
+                    parse pProgram "" "print foo\nprint\n" `shouldParse` ast
+            describe "is" $ do
+                it "parses variable assignment" $ do
+                    let ast = Is "foo" "bar"
+                    parse pIs "" "foo is bar" `shouldParse` ast
+                it "parses variables as chunks" $ do
+                    let script = "name is Hedy\nprint Hello name!"
+                    let expected = [Is "name" "Hedy", Print ["Hello", " ", "name", "!"]]
+                    parse pProgram "" script `shouldParse` expected
+            describe "ask" $
+                it "parses ask statements" $ do
+                    let script = "name is ask What's your name?"
+                    let ast = [Ask "name" "What's your name?"]
+                    parse pProgram "" script `shouldParse` ast

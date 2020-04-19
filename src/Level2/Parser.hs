@@ -26,15 +26,6 @@ pVarName, pNotVarName :: Parser String
 pVarName = some alphaNumChar <?> "a variable name"
 pNotVarName = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
 
-pStmt :: String -> (String -> Stmt) -> Parser Stmt
-pStmt keyword stmtConstructor = do
-    let stmt = string keyword *> pSpace *> pLiteral <* pEnd
-    let nakedStmt = string keyword *> pEnd
-    let withSpace = string keyword *> many pSpace <* pEnd
-    s <- (try stmt <|> try withSpace <|> nakedStmt) <?> "a statement"
-    return $ stmtConstructor s
-
-
 pAssign :: Parser Stmt
 pAssign = do
     varname <- pVarName
@@ -52,12 +43,22 @@ pPrint = do
     pEnd
     return $ Print $ fromMaybe [""] chunks
 
+pAsk :: Parser Stmt
+pAsk = do
+    varName <- pVarName
+    pSpace
+    string "is"
+    pSpace
+    string "ask"
+    pSpace
+    literal <- pLiteral
+    pEnd
+    return $ Ask varName literal
+
+
 pNoOp :: Parser Stmt
 pNoOp = hidden (some spaceChar) >> pEnd >> return NoOp
 
-{-
-pAsk = pStmt "ask" Ask
--}
 pProgram :: Parser Program
 pProgram = do
     space

@@ -64,11 +64,12 @@ pIs = do
     pSpace
     values <- pListOfLiteral
     pEnd
-    return $
-        if | length values > 1 -> IsList varName $ trim `fmap` values
-           | length values == 1 -> Is varName $ head values
-           | otherwise -> Is varName ""
+    return $ Is varName (makeExpr values)
   where
+    makeExpr values =
+        if | length values > 1 -> List $ trim `fmap` values
+           | length values == 1 -> Scalar $ head values
+           | otherwise -> Scalar ""
     trim = dropWhileEnd isSpace . dropWhile isSpace
 
 pAsk :: Parser Stmt

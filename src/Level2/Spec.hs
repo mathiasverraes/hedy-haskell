@@ -55,3 +55,8 @@ spec =
                     let script = "name is ask What's your name?"
                     let ast = [Ask "name" "What's your name?"]
                     parse pProgram "" script `shouldParse` ast
+            describe "lists" $
+                it "assigns a list of strings to a variable" $ do
+                    let script = "animals is dog, cat, kangaroo"
+                    let ast = [IsList "animals" ["dog", "cat", "kangaroo"]]
+                    parse pProgram "" script `shouldParse` ast

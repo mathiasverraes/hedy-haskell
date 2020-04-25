@@ -1,8 +1,13 @@
+{-# LANGUAGE MultiWayIf #-}
+
 module Level2.Parser where
 
+import           Data.Char                  (isPunctuation, isSpace)
+import           Data.List                  (dropWhileEnd)
 import qualified Data.Map.Strict            as M
 import           Data.Maybe
 import           Data.Void
+import           Flow
 import           Level2.AST
 import           Text.Megaparsec
 import           Text.Megaparsec.Char
@@ -21,6 +26,20 @@ pEnd = string "\n" <|> string "\r\n" <|> (string "" <* eof) <?> "the end of the 
 
 pLiteral :: Parser String
 pLiteral = many (alphaNumChar <|> markChar <|> punctuationChar <|> symbolChar <|> pSpace) <?> "a string literal"
+
+pLiteralWithoutComma :: Parser String
+pLiteralWithoutComma =
+    many (alphaNumChar <|> markChar <|> punctuationChar' <|> symbolChar <|> pSpace) <?> "a string literal"
+  where
+    isPunctuation' :: Char -> Bool
+    isPunctuation' c =
+        if c == ','
+            then False
+            else isPunctuation c
+    punctuationChar' = satisfy isPunctuation'
+
+pListOfLiteral :: Parser [String]
+pListOfLiteral = pLiteralWithoutComma `sepBy` string ","
 
 pVarName, pNotVarName :: Parser String
 pVarName = some alphaNumChar <?> "a variable name"
@@ -43,9 +62,14 @@ pIs = do
     pSpace
     string "is"
     pSpace
-    value <- pLiteral
+    values <- pListOfLiteral
     pEnd
-    return $ Is varName value
+    return $
+        if | length values > 1 -> IsList varName $ trim `fmap` values
+           | length values == 1 -> Is varName $ head values
+           | otherwise -> Is varName ""
+  where
+    trim = dropWhileEnd isSpace . dropWhile isSpace
 
 pAsk :: Parser Stmt
 pAsk = do

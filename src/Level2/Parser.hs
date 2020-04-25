@@ -46,15 +46,17 @@ pVarName = some alphaNumChar <?> "a variable name"
 
 pNotVarName = some (markChar <|> punctuationChar <|> symbolChar <|> pSpace)
 
+pAtRandom = pVarName <* some pSpace <* string "at" <* some pSpace <* string "random"
+
 pChunks :: Parser [Chunk]
-pChunks = many (pVarName <|> pNotVarName)
+pChunks = many ((ChunkRandom <$> try pAtRandom) <|> (ChunkStr <$> pVarName) <|> (ChunkStr <$> pNotVarName))
 
 pPrint :: Parser Stmt
 pPrint = do
     string "print"
     chunks <- optional (pSpace *> pChunks) <?> "a string to print"
     pEnd
-    return $ Print $ fromMaybe [""] chunks
+    return $ Print $ fromMaybe [ChunkStr ""] chunks
 
 pIs :: Parser Stmt
 pIs = do

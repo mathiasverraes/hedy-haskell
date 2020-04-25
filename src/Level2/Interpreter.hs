@@ -15,12 +15,13 @@ type VarDictionary = M.Map VarName Expr
 replaceVarsInChunks :: VarDictionary -> [Chunk] -> String
 replaceVarsInChunks dict = foldl go ""
   where
-    go init chunk = init ++ show (M.findWithDefault (Scalar chunk) chunk dict)
+    go init (ChunkStr s) = init ++ show (M.findWithDefault (Scalar s) (s :: VarName) dict)
+    go init (ChunkRandom varName) = init ++ show (M.findWithDefault (Scalar (varName ++ " at random")) varName dict)
 
 exec :: Stmt -> StateT VarDictionary IO ()
 exec (Print chunks) = do
-    vars <- get
-    let s = replaceVarsInChunks vars chunks
+    dict <- get
+    let s = replaceVarsInChunks dict chunks
     lift $ putStrLn s
 exec (Ask varName str) = do
     lift $ putStrLn str

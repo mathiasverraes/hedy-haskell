@@ -2,9 +2,12 @@ module Level2.AST where
 
 import           Data.List (intercalate)
 
-type Chunk = String
-
 type VarName = String
+
+data Chunk
+    = ChunkStr String
+    | ChunkRandom VarName
+    deriving (Show, Eq)
 
 data Expr
     = Scalar String

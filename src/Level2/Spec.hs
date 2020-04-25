@@ -17,37 +17,53 @@ spec =
     describe "Level2" $ do
         describe "Interpreter" $ do
             it "replaces variables" $ do
-                let chunks = ["greeting", " ", "name", "!"]
+                let chunks = ChunkStr <$> ["greeting", " ", "name", "!"]
                 let vars = M.fromList [("name", Scalar "Hedy"), ("greeting", Scalar "Hi")]
                 replaceVarsInChunks vars chunks `shouldBe` "Hi Hedy!"
             it "replaces variables that occur twice" $ do
-                let chunks = ["foo", " and ", "foo"]
+                let chunks = ChunkStr <$> ["foo", " and ", "foo"]
                 let vars = M.fromList [("foo", Scalar "bar")]
                 replaceVarsInChunks vars chunks `shouldBe` "bar and bar"
             it "doesn't replaces variables recursively" $ do
-                let chunks = ["hi", " ", "foo"]
+                let chunks = ChunkStr <$> ["hi", " ", "foo"]
                 let vars = M.fromList [("foo", Scalar "bar"), ("bar", Scalar "buz")]
                 replaceVarsInChunks vars chunks `shouldBe` "hi bar"
             it "doesn't replace substrings" $ do
-                let chunks = ["fool"]
+                let chunks = [ChunkStr "fool"]
                 let vars = M.fromList [("foo", Scalar "bar")]
                 replaceVarsInChunks vars chunks `shouldBe` "fool"
             it "pretty prints lists" $ show (List ["foo", "bar"]) `shouldBe` "['foo', 'bar']"
         describe "Parser" $ do
             describe "print" $ do
                 it "parses print" $ do
-                    let ast = Print ["Hello", " ", "Hedy", "!"]
+                    let ast = Print (ChunkStr <$> ["Hello", " ", "Hedy", "!"])
                     parse pPrint "" "print Hello Hedy!" `shouldParse` ast
                 it "parses naked prints" $ do
-                    let ast = [Print ["foo"], Print [""]]
+                    let ast = [Print [ChunkStr "foo"], Print [ChunkStr ""]]
                     parse pProgram "" "print foo\nprint\n" `shouldParse` ast
+                it "parses at randoms" $ do
+                    let script = "print animals at random"
+                    let ast = Print [ChunkRandom "animals"]
+                    parse pPrint "" script `shouldParse` ast
+                it "parses at randoms with additional strings before and after" $ do
+                    let script = "print I like animals at random !!"
+                    let ast =
+                            Print
+                                [ ChunkStr "I"
+                                , ChunkStr " "
+                                , ChunkStr "like"
+                                , ChunkStr " "
+                                , ChunkRandom "animals"
+                                , ChunkStr "!!"
+                                ]
+                    parse pPrint "" script `shouldParse` ast
             describe "is" $ do
                 it "parses variable assignment" $ do
                     let ast = Is "foo" (Scalar "bar")
                     parse pIs "" "foo is bar" `shouldParse` ast
                 it "parses variables as chunks" $ do
                     let script = "name is Hedy\nprint Hello name!"
-                    let expected = [Is "name" (Scalar "Hedy"), Print ["Hello", " ", "name", "!"]]
+                    let expected = [Is "name" (Scalar "Hedy"), Print (ChunkStr <$> ["Hello", " ", "name", "!"])]
                     parse pProgram "" script `shouldParse` expected
             describe "ask" $
                 it "parses ask statements" $ do

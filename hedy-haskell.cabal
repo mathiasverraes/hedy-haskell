@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1071e6e2e9d2e66d8223c602852a1acab8906efb6b63af89838dbfe7d692166f
+-- hash: 73d75c3d0f95f4951ae37c864711b4ecdfe35b17919f058cf48b93d1b6b33eed
 
 name:           hedy-haskell
 version:        0.2.0
@@ -48,6 +48,7 @@ library
     , hspec-megaparsec
     , megaparsec
     , mtl
+    , random
     , raw-strings-qq
     , text
   default-language: Haskell2010
@@ -68,6 +69,7 @@ executable hedy-haskell-exe
     , hspec-megaparsec
     , megaparsec
     , mtl
+    , random
     , raw-strings-qq
     , text
   default-language: Haskell2010
@@ -89,6 +91,7 @@ test-suite hedy-haskell-test
     , hspec-megaparsec
     , megaparsec
     , mtl
+    , random
     , raw-strings-qq
     , text
   default-language: Haskell2010

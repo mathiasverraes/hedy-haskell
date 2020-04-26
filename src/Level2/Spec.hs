@@ -19,20 +19,24 @@ spec =
             it "replaces variables" $ do
                 let chunks = ChunkStr <$> ["greeting", " ", "name", "!"]
                 let vars = M.fromList [("name", Scalar "Hedy"), ("greeting", Scalar "Hi")]
-                replaceVarsInChunks vars chunks `shouldBe` "Hi Hedy!"
+                replaceVars vars chunks `shouldReturn` "Hi Hedy!"
             it "replaces variables that occur twice" $ do
                 let chunks = ChunkStr <$> ["foo", " and ", "foo"]
                 let vars = M.fromList [("foo", Scalar "bar")]
-                replaceVarsInChunks vars chunks `shouldBe` "bar and bar"
+                replaceVars vars chunks `shouldReturn` "bar and bar"
             it "doesn't replaces variables recursively" $ do
                 let chunks = ChunkStr <$> ["hi", " ", "foo"]
                 let vars = M.fromList [("foo", Scalar "bar"), ("bar", Scalar "buz")]
-                replaceVarsInChunks vars chunks `shouldBe` "hi bar"
+                replaceVars vars chunks `shouldReturn` "hi bar"
             it "doesn't replace substrings" $ do
                 let chunks = [ChunkStr "fool"]
                 let vars = M.fromList [("foo", Scalar "bar")]
-                replaceVarsInChunks vars chunks `shouldBe` "fool"
+                replaceVars vars chunks `shouldReturn` "fool"
             it "pretty prints lists" $ show (List ["foo", "bar"]) `shouldBe` "['foo', 'bar']"
+            it "picks a random element from a list" $ do
+                let chunks = [ChunkRandom "x"]
+                let vars = M.fromList [("x", List ["abc", "abc", "abc"])]
+                replaceVars vars chunks `shouldReturn` "abc"
         describe "Parser" $ do
             describe "print" $ do
                 it "parses print" $ do
@@ -54,7 +58,7 @@ spec =
                                 , ChunkStr "like"
                                 , ChunkStr " "
                                 , ChunkRandom "animals"
-                                , ChunkStr "!!"
+                                , ChunkStr " !!"
                                 ]
                     parse pPrint "" script `shouldParse` ast
             describe "is" $ do

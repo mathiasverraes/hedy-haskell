@@ -9,20 +9,32 @@ import           Data.Maybe
 import qualified Data.Text                as T
 import           Level2.AST
 import           System.Environment
+import           System.Random            (randomRIO)
+
+random :: [a] -> IO a
+random xs = (xs !!) <$> randomRIO (0, length xs - 1)
 
 type VarDictionary = M.Map VarName Expr
 
-replaceVarsInChunks :: VarDictionary -> [Chunk] -> String
-replaceVarsInChunks dict = foldl go ""
+replaceVars :: VarDictionary -> [Chunk] -> IO String
+replaceVars dict = foldM go ""
   where
-    go init (ChunkStr s) = init ++ show (M.findWithDefault (Scalar s) (s :: VarName) dict)
-    go init (ChunkRandom varName) = init ++ show (M.findWithDefault (Scalar (varName ++ " at random")) varName dict)
+    go init (ChunkStr s) = return $ init ++ readScalar s dict
+    go init (ChunkRandom s) = do
+        result <- readRandom s dict
+        return $ init ++ result
+    readScalar s dict = show (M.findWithDefault (Scalar s) s dict)
+    readRandom varName dict =
+        case M.lookup varName dict of
+            Nothing         -> return "???"
+            Just (Scalar s) -> return s
+            Just (List xs)  -> random xs
 
 exec :: Stmt -> StateT VarDictionary IO ()
 exec (Print chunks) = do
     dict <- get
-    let s = replaceVarsInChunks dict chunks
-    lift $ putStrLn s
+    let s = replaceVars dict chunks
+    lift $ s >>= putStrLn
 exec (Ask varName str) = do
     lift $ putStrLn str
     answer <- lift getLine

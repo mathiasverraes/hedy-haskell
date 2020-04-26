@@ -29,6 +29,7 @@ dependencies:
 - hspec -any
 - flow -any
 - hspec-megaparsec -any
+- random
 
 library:
   source-dirs:

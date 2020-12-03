@@ -47,3 +47,4 @@ execAll = mapM_ exec
 
 run :: Program -> IO ()
 run program = evalStateT (execAll program) M.empty
+

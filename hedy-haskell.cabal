@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.2.
+-- This file has been generated from package.yaml by hpack version 0.33.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 73d75c3d0f95f4951ae37c864711b4ecdfe35b17919f058cf48b93d1b6b33eed
+-- hash: fbf05214feda68a55e590acea117ee15294b13c8f8dd4bf3c7a5f632c34bcf44
 
 name:           hedy-haskell
 version:        0.2.0
@@ -26,6 +26,7 @@ source-repository head
 
 library
   exposed-modules:
+      Foo
       Level1
       Level1.AST
       Level1.Interpreter
@@ -48,6 +49,7 @@ library
     , hspec-megaparsec
     , megaparsec
     , mtl
+    , parser-combinators
     , random
     , raw-strings-qq
     , text
@@ -69,6 +71,7 @@ executable hedy-haskell-exe
     , hspec-megaparsec
     , megaparsec
     , mtl
+    , parser-combinators
     , random
     , raw-strings-qq
     , text
@@ -91,6 +94,7 @@ test-suite hedy-haskell-test
     , hspec-megaparsec
     , megaparsec
     , mtl
+    , parser-combinators
     , random
     , raw-strings-qq
     , text

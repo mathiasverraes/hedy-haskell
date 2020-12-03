@@ -1,0 +1,10 @@
+name is Hedy
+color is green
+print
+print name likes color
+animals is kangaroo, dog, cat
+print animals
+print I like animals !!
+print animals at random
+print I like animals at random !!
+print I like notavar at random !!

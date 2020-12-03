@@ -30,6 +30,7 @@ dependencies:
 - flow -any
 - hspec-megaparsec -any
 - random
+- parser-combinators  -any
 
 library:
   source-dirs:
